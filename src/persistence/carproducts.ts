@@ -11,11 +11,12 @@ let timeStamp = moment().format();
 class CarProducts {
   
   get(id: number | undefined = undefined){
-    const read: any = readFile(publicFoldercar)
+    
     if(id){
       return products.filter(aProduct => aProduct.id == id)
     }
     
+    this.readProducts()
     return products;
 
   }
@@ -52,6 +53,10 @@ class CarProducts {
 
   saveProducts() {
     fs.writeFileSync(publicFoldercar, objToJSON(products), 'utf-8');
+  }
+
+  readProducts() {
+    fs.readFileSync(publicFoldercar, 'utf-8');
   }
   
 }

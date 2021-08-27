@@ -53,6 +53,7 @@ class Products {
 
   delete(id: string){
     products = products.filter(aProduct => aProduct.id !== Number(id))
+    this.saveProducts();
     return products;
   }
 
