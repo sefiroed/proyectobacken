@@ -2,7 +2,9 @@ import { addProduct, NewProduct, objToJSON } from '../interfaces/interfaces'
 import moment from 'moment';
 import { readFile, writeFile } from '../interfaces/file'
 import { publicFoldercar } from '../services/server'
+import path from 'path';
 
+const filePathProduct: string = path.resolve(__dirname, '../../public/productscar.json');
 const fs = require('fs');
 let products: any[] = [];
 let timeStamp = moment().format();
@@ -11,12 +13,13 @@ let timeStamp = moment().format();
 class CarProducts {
   
   get(id: number | undefined = undefined){
-    
+    const read:any = readFile(filePathProduct)
+    // products = JSON.parse(read);
+    // console.log(products)
     if(id){
       return products.filter(aProduct => aProduct.id == id)
     }
     
-    this.readProducts()
     return products;
 
   }
@@ -44,11 +47,15 @@ class CarProducts {
 
   delete(id: string){
     products = products.filter(aProduct => aProduct.id !== Number(id))
+    this.saveProducts();
     return products;
   }
 
   find(id: String) {
-    return  products.find(aProduct => aProduct.id == (id))
+    const read:any = readFile(filePathProduct)
+    products = read
+    return  products
+    // return  products.find(aProduct => aProduct.id == (id))
   }
 
   saveProducts() {
@@ -56,7 +63,7 @@ class CarProducts {
   }
 
   readProducts() {
-    fs.readFileSync(publicFoldercar, 'utf-8');
+    fs.readFileSync(filePathProduct, 'utf-8');
   }
   
 }

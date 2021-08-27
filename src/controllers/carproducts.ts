@@ -1,11 +1,13 @@
-import {Request, Response, NextFunction} from 'express';
+import {Request, Response} from 'express';
 import {carProductsPersistence} from '../persistence/carproducts';
+import { publicFoldercar } from '../services/server'
 
 
 class CarProduct {
     getProducts (req : Request, res : Response) {
         const id = Number(req.params.id);
         const product = carProductsPersistence.get(id);
+        const data:string = publicFoldercar;
         if(id){
           console.log(product);
           if(!product)
@@ -18,11 +20,11 @@ class CarProduct {
         }
         if (product.length < 1) {
           return res.status(400).json({
-            error: 'No products loaded',
+            Error: 'No products loaded',
           });
         }
         res.json({
-          data: carProductsPersistence.get()
+          data: carProductsPersistence.get(undefined)
         })
         
       }

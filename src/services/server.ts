@@ -6,8 +6,8 @@ import apiRouter from '../routes/index';
 const app = express();
 
 export const publicFolderPath = path.resolve(__dirname, '../../public');
-export const publicFolderarch = path.resolve(__dirname, '../../public/products.json');
-export const publicFoldercar = path.resolve(__dirname, '../../public/productscar.json');
+export const publicFolderarch = path.resolve(__dirname, '../../dist/persistence/products.json');
+export const publicFoldercar = path.resolve(__dirname, '../../dist/persistence/productscar.json');
 
 app.use(express.static(publicFolderPath));
 
