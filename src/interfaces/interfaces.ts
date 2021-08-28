@@ -3,19 +3,13 @@ import moment from 'moment';
 let timeStamp = moment().format();
 
 interface addProduct {
-    timestamp: string
+    timestamp: typeof timeStamp
     name: string
     description: string
     codeproduct:number
     url: string
     price: number
     stock: number
-}
-
-interface Product {
-    id: number,
-    nombre: string, 
-    precio: number
 }
 
 interface NewProduct {
@@ -49,10 +43,12 @@ interface NewCart {
     product: [CartProduct]
 }
 
-const objToJSON = (NewProduct: any) => {
-    return JSON.stringify(NewProduct, undefined, 2);
-};
+// const objToJSON = (NewProduct: any) => {
+//     return JSON.stringify(NewProduct, undefined, 2);
+// };
 
 
-export { addProduct, Product, NewProduct, CartProduct, objToJSON };
+
+
+export { addProduct, NewProduct, CartProduct, timeStamp };
 

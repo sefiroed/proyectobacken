@@ -9,13 +9,15 @@ class Product {
     const id = Number(req.params.id);
     const product = productsPersistence.get(id);
     if(id){
-      console.log(product);
-      if(!product)
+      if(!product){
         return res.status(404).json({
-          msg: "Product not found"
-        })   
+          msg: "Product not found",
+        })
+      }else{   
+        res.json({product})
+      }
       return res.status(404).json({
-        msg: "ID invalidate"
+        msg: "ID invalidate",
       })
     }
     if (product.length < 1) {
@@ -63,13 +65,18 @@ class Product {
 
   addProducts (req : Request, res : Response) {
     
-    const newItem = productsPersistence.add(req.body);
-    res.status(200)
-    .json({ msg: "Product added successfully", newItem });
-  
-    res.status(404)
-    .json({"Error": "Product not found"})
-    
+    const body = req.body;
+    const product = productsPersistence.add(body);
+
+    if (!product) {
+      return res.status(400).json({
+        msg: 'Product invalidate',
+      });
+    } else {
+      res.json({
+        data: product,
+      });
+    }
   }
 
   updateProducts (req : Request, res : Response) {
@@ -77,8 +84,6 @@ class Product {
     const id = req.params.id;
     const newItem = productsPersistence.update(id,body);
     const product = productsPersistence.find(id);
-
-    
     if(!product){
       return res.status(200)
       .json({ 
@@ -94,7 +99,6 @@ class Product {
 
   deleteProducts (req : Request, res : Response) {
     const id = String(req.params.id);
-
     const product = productsPersistence.find(id);
 
     if(!product){

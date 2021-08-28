@@ -1,29 +1,32 @@
-import { addProduct, NewProduct, objToJSON } from '../interfaces/interfaces'
+import { addProduct, NewProduct } from '../interfaces/interfaces'
+import {objToJSON} from './../interfaces/dataapp'
 import moment from 'moment';
-import { readFile, writeFile } from '../interfaces/file'
-import { publicFolderarch } from '../services/server'
+import path from 'path';
+// import { readFile, writeFile } from '../interfaces/datacar'
 
+const filePathProduct = path.resolve(__dirname, '../../public/products.json');
 const fs = require('fs');
 let products: any[] = [];
 let timeStamp = moment().format();
 
 
+
 class Products {
+
+  find(id: string) {
+    return  products.find(aProduct => aProduct.id == (id))
+  }
   
   get(id: number | undefined = undefined){
-    const read: any = readFile(publicFolderarch)
     if(id){
       return products.filter(aProduct => aProduct.id == id)
     }
-    
     return products;
 
   }
 
   add(data: addProduct){
-
     const newItem = {
-
       id: products.length +1,
       timestamp: timeStamp,
       name: data.name,
@@ -37,11 +40,10 @@ class Products {
 
     products.push(newItem);
     this.saveProducts();
-
     return newItem;
   }
 
-  update(id:String, dato:any){
+  update(id:string, dato:any){
     
     const index = products.findIndex((data:any) => data.id == id);
     dato['id'] = Number(id)
@@ -57,12 +59,8 @@ class Products {
     return products;
   }
 
-  find(id: String) {
-    return  products.find(aProduct => aProduct.id == (id))
-  }
-
   saveProducts() {
-    fs.writeFileSync(publicFolderarch, objToJSON(products), 'utf-8');
+    fs.writeFileSync(filePathProduct, objToJSON(products), 'utf-8');
   }
   
 }
