@@ -10,19 +10,22 @@ let timeStamp = moment().format();
 
 
 class CarProducts {
+  constructor(){
+    this.readProductsCar()
+  }
   
-  find(id: string) {
-    return  products.find(aProduct => aProduct.id == (id))
+  async find(id: string) {
+    return await products.find(aProduct => aProduct.id == (id))
   }
 
-  get(id: number | undefined = undefined){
+   get(id: number | undefined = undefined){
     if(id){
       return products.filter(aProduct => aProduct.id == id)
     }
     return products;
   }
 
-  add(data: addProduct){
+   add(data: addProduct){
     const newItem = {
       id: products.length +1,
       timestamp: timeStamp,
@@ -39,19 +42,20 @@ class CarProducts {
     return newItem;
   }
 
-  delete(id: string) {
+  async delete(id: string) {
     products = products.filter(aProduct => aProduct.id !== Number(id))
     this.saveProducts();
-    return products;
+    return await products;
   }
 
   saveProducts() {
     fs.writeFileSync(filePathCarProduct, objToJSON(products), 'utf-8');
   }
 
-  // readProducts() {
-  //   fs.readFileSync(filePathProduct, 'utf-8');
-  // }
+  async readProductsCar() {
+    const productFile = await fs.readFileSync(filePathCarProduct, 'utf-8');
+    products = JSON.parse(productFile)
+  }
   
 }
 

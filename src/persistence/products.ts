@@ -12,9 +12,11 @@ let timeStamp = moment().format();
 
 
 class Products {
-
-  find(id: string) {
-    return  products.find(aProduct => aProduct.id == (id))
+  constructor(){
+    this.readProducts()
+  }
+  async find(id: string) {
+    return await products.find(aProduct => aProduct.id == (id))
   }
   
   get(id: number | undefined = undefined){
@@ -53,15 +55,21 @@ class Products {
     
   }
 
-  delete(id: string){
+  async delete(id: string){
     products = products.filter(aProduct => aProduct.id !== Number(id))
     this.saveProducts();
-    return products;
+    return await products;
   }
 
   saveProducts() {
     fs.writeFileSync(filePathProduct, objToJSON(products), 'utf-8');
   }
+
+  async readProducts() {
+    const productFile = await fs.readFileSync(filePathProduct, 'utf-8');
+    products = JSON.parse(productFile)
+  }
+
   
 }
 
